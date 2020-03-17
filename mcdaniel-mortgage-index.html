@@ -1,0 +1,68 @@
+<!-- Tanner McDaniel
+2/29/2020
+Mortgage Calculator
+This was tested on CodePen and it works. -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Mortgage Calculator</title>
+  <script>
+    function registerEvents() {
+      document.mortgageCalc.operate.addEventListener('click', validate, false);
+    }
+    
+    function validate() {
+      var purPri = document.mortgageCalc.purchasePrice.value;
+      var dowPay = document.mortgageCalc.downPayment.value;
+      var loaLength = document.mortgageCalc.loanLength.value;
+      var intRate = document.mortgageCalc.interestRate.value;
+      if (!isNaN(purPri) && !isNaN(dowPay) && !isNaN(loaLength) && !isNaN(intRate)) {
+        mortgageCalculator();
+      } else {
+        alert("ERROR: All four numbers must be numeric!");
+      }
+    }
+    
+    function mortgageCalculator() {
+      var purchPrice = parseInt(document.mortgageCalc.purchasePrice.value);
+      var dowPayment = parseInt(document.mortgageCalc.downPayment.value);
+      var loanLen = parseInt(document.mortgageCalc.loanLength.value);
+      var interRate = parseInt(document.mortgageCalc.interestRate.value);
+      
+      var P = purchPrice - dowPayment;
+      var r = (interRate * 0.01) / 12;
+      var n = loanLen * 12;
+      
+      var monthlyPay = P * ((r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1));
+      var M = monthlyPay.toFixed(2);
+      
+      document.mortgageCalc.result.value = M;
+    }
+    
+    function resetAll() {
+      document.mortgageCalc.purchasePrice.value = null;
+      document.mortgageCalc.downPayment.value = null;
+      document.mortgageCalc.loanLength.value = null;
+      document.mortgageCalc.interestRate.value = null;
+      document.mortgageCalc.result.value = null;
+    }
+  </script>
+</head>
+<body onload="registerEvents()">
+  <div class="title"></div>
+  <h1>Hello World</h1>
+  <form name="mortgageCalc">
+    <label>Purchase Price: $<input type="number" name="purchasePrice"></label><br><br>
+    <label>Down Payment: $<input type="number" name="downPayment"></label><br><br>
+    <label>Length of Loan: <input type="number" name="loanLength"> years</label><br><br>
+    <label>Interest Rate: <input name="interestRate">%</label><br><br>
+    <input type="button" name="operate" value="Calculate Mortgage"><br><br>
+    <label>Monthly Payment: $<input type="number" name="result"></label><br><br>
+    <input type="button" onclick="resetAll()" value="Reset Calculator">
+  </form>
+</body>
+</html>
